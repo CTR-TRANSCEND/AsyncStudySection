@@ -1,0 +1,468 @@
+/**
+ * Discussion System Polish Styles (SPEC-UIX-002 Milestone 7)
+ * TAG: SPEC-UIX-002-M7-CSS
+ *
+ * Design-TAG: Enhanced discussion system with unread badges, grouping, and quick reply
+ * Function-TAG: Improves discussion UX and real-time collaboration
+ * Test-TAG: WCAG 2.1 AA compliant, tested via Playwright
+ */
+
+/* ============================================
+   UNREAD BADGES
+   ============================================ */
+
+.unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  background: var(--danger-color, #ef4444);
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-left: auto;
+}
+
+.discussion-thread-item {
+  position: relative;
+}
+
+.discussion-thread-item[data-unread="0"] .unread-badge {
+  display: none;
+}
+
+/* ============================================
+   MESSAGE GROUPING
+   ============================================ */
+
+.message-group {
+  margin-bottom: 2rem;
+}
+
+.message-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+}
+
+.message-group-header::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--primary-color, #3b82f6);
+  border-radius: 50%;
+}
+
+.message-group-header[data-date="today"]::before {
+  background: var(--success-color, #10b981);
+}
+
+.message-group-header[data-date="yesterday"]::before {
+  background: var(--warning-color, #f59e0b);
+}
+
+.message-group-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ============================================
+   QUICK REPLY DRAWER
+   ============================================ */
+
+.quick-reply-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background: var(--primary-color, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.quick-reply-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.quick-reply-button:active {
+  transform: scale(0.95);
+}
+
+.quick-reply-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.quick-reply-backdrop.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.quick-reply-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--bg-primary, #ffffff);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.quick-reply-drawer.is-open {
+  transform: translateY(0);
+}
+
+.quick-reply-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.quick-reply-drawer-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  margin: 0;
+}
+
+.close-drawer-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #6b7280);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.close-drawer-button:hover {
+  background: var(--bg-secondary, #f3f4f6);
+  color: var(--text-primary, #111827);
+}
+
+.quick-reply-textarea-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.quick-reply-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.quick-reply-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.quick-reply-drawer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submit-reply-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-color, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.submit-reply-button:hover {
+  background: var(--primary-dark, #2563eb);
+}
+
+.submit-reply-button:active {
+  transform: scale(0.98);
+}
+
+.submit-reply-button:disabled {
+  background: var(--text-tertiary, #9ca3af);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================
+   MENTION AUTOCOMPLETE
+   ============================================ */
+
+.mention-autocomplete {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  margin-bottom: 0.5rem;
+  display: none;
+}
+
+.mention-autocomplete.is-visible {
+  display: block;
+}
+
+.mention-option {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mention-option:hover,
+.mention-option.is-selected {
+  background: var(--bg-secondary, #f3f4f6);
+}
+
+.mention-option-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--primary-light, #dbeafe);
+  color: var(--primary-color, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.mention-option-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mention-option-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  margin-bottom: 0.125rem;
+}
+
+.mention-option-role {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6b7280);
+}
+
+/* ============================================
+   REFRESH BUTTON
+   ============================================ */
+
+.refresh-discussions-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-secondary, #f3f4f6);
+  color: var(--text-primary, #111827);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.refresh-discussions-button:hover {
+  background: var(--bg-tertiary, #e5e7eb);
+  border-color: var(--text-tertiary, #9ca3af);
+}
+
+.refresh-discussions-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.refresh-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--text-tertiary, #9ca3af);
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.refresh-discussions-button .refresh-spinner {
+  display: none;
+}
+
+.refresh-discussions-button.is-refreshing .refresh-spinner {
+  display: inline-block;
+}
+
+.refresh-discussions-button.is-refreshing .refresh-icon {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .quick-reply-button {
+    bottom: 1rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+  }
+
+  .quick-reply-drawer {
+    padding: 1rem;
+    max-height: 90vh;
+  }
+
+  .quick-reply-drawer-title {
+    font-size: 1rem;
+  }
+
+  .quick-reply-textarea {
+    min-height: 100px;
+  }
+
+  .quick-reply-drawer-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .submit-reply-button {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* Focus indicators */
+.quick-reply-button:focus,
+.submit-reply-button:focus,
+.refresh-discussions-button:focus,
+.close-drawer-button:focus {
+  outline: 2px solid var(--primary-color, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .quick-reply-button,
+  .quick-reply-drawer,
+  .refresh-spinner {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .quick-reply-drawer {
+    border: 2px solid currentColor;
+  }
+
+  .mention-autocomplete {
+    border-width: 2px;
+  }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .quick-reply-drawer {
+  background: var(--bg-primary, #1a202c);
+  border-top-color: var(--border-color, #4a5568);
+}
+
+[data-theme="dark"] .quick-reply-textarea {
+  background: var(--bg-secondary, #2d3748);
+  border-color: var(--border-color, #4a5568);
+  color: var(--text-primary, #f7fafc);
+}
+
+[data-theme="dark"] .mention-autocomplete {
+  background: var(--bg-primary, #1a202c);
+  border-color: var(--border-color, #4a5568);
+}
+
+[data-theme="dark"] .mention-option:hover,
+[data-theme="dark"] .mention-option.is-selected {
+  background: var(--bg-secondary, #2d3748);
+}
+
+/* Live region for screen readers */
+.discussion-announcements {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

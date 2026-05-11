@@ -1,0 +1,85 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+README*
+CHANGELOG*
+LICENSE
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Development files
+.phpunit.result.cache
+.phpunit.cache/
+phpunit.xml
+composer.lock
+
+# Tests
+tests/
+test/
+*.test.php
+test.php
+test_access.php
+playwright-tests/
+playwright-report/
+test-results/
+playwright.config.ts
+package.json
+package-lock.json
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# MoAI/Claude config
+.moai/
+.claude/
+.mcp.json
+
+# Python analysis scripts
+*.py
+
+# Sample data
+sampleReports/
+
+# Docker (prevent recursive copy)
+docker-compose.yml
+Dockerfile
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/*.log
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Backups (don't include in image)
+backups/
+*.bak
+*.backup

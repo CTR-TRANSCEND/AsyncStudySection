@@ -1,0 +1,52 @@
+{
+    "name": "asynchronous-grant-review/review-management",
+    "description": "Asynchronous Grant Review System - NIH-style peer review platform",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TDD Implementer",
+            "email": "dev@example.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ezyang/htmlpurifier": "^4.19"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "squizlabs/php_codesniffer": "^3.0",
+        "phpstan/phpstan": "^1.0",
+        "enlightn/security-checker": "^1.0"
+    },
+    "autoload": {
+        "classmap": [
+            "includes/"
+        ],
+        "files": [
+            "includes/functions.php",
+            "includes/database_helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    },
+    "scripts": {
+        "test": "phpunit --configuration phpunit.xml",
+        "test-coverage": "phpunit --configuration phpunit.xml --coverage-html coverage",
+        "lint": "phpcs --standard=PSR12 includes/",
+        "analyze": "phpstan analyse includes/ --level=5",
+        "security": "security-checker security:check"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}

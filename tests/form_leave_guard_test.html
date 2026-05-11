@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Leave Guard Test (SPEC-UIX-002 Milestone 4)</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/utilities.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-section h2 {
+            margin-top: 0;
+        }
+        .test-result {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+        }
+        .test-result.pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .test-result.fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form Leave Guard System Test</h1>
+    <p>Tests the opt-in form leave guard with visual indicators and smart exemptions.</p>
+
+    <!-- Test 1: Basic form with dirty tracking -->
+    <div class="test-section">
+        <h2>Test 1: Basic Form with Dirty Tracking</h2>
+        <p>This form should track changes and show an indicator when dirty.</p>
+        <form id="test-form-1" data-track-dirty>
+            <div class="form-group">
+                <label for="input1">Name</label>
+                <input type="text" id="input1" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="input2">Email</label>
+                <input type="email" id="input2" name="email" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div class="test-result" id="result-1"></div>
+    </div>
+
+    <!-- Test 2: Form with filter inputs (should be exempt) -->
+    <div class="test-section">
+        <h2>Test 2: Form with Filter Inputs (Exempt)</h2>
+        <p>Filter inputs with data-no-track should not trigger dirty state.</p>
+        <form id="test-form-2" data-track-dirty>
+            <div class="form-group">
+                <label for="search">Search (Exempt)</label>
+                <input type="search" id="search" name="search" class="form-control" data-no-track>
+            </div>
+            <div class="form-group">
+                <label for="filter-name">Name Filter (Exempt)</label>
+                <input type="text" id="filter-name" name="filter_name" class="form-control" data-no-track>
+            </div>
+            <div class="form-group">
+                <label for="actual-data">Actual Data (Tracked)</label>
+                <input type="text" id="actual-data" name="actual_data" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div class="test-result" id="result-2"></div>
+    </div>
+
+    <!-- Test 3: Multiple forms -->
+    <div class="test-section">
+        <h2>Test 3: Multiple Forms (Independent Tracking)</h2>
+        <p>Each form should track its dirty state independently.</p>
+        <form id="test-form-3a" data-track-dirty style="margin-bottom: 1rem;">
+            <div class="form-group">
+                <label for="form3a-input">Form 3A Input</label>
+                <input type="text" id="form3a-input" name="data" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Form 3A</button>
+        </form>
+
+        <form id="test-form-3b" data-track-dirty>
+            <div class="form-group">
+                <label for="form3b-input">Form 3B Input</label>
+                <input type="text" id="form3b-input" name="data" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Form 3B</button>
+        </form>
+        <div class="test-result" id="result-3"></div>
+    </div>
+
+    <!-- Test 4: Form without data-track-dirty (should not track) -->
+    <div class="test-section">
+        <h2>Test 4: Form Without Tracking (Control)</h2>
+        <p>This form does NOT have data-track-dirty attribute and should not track changes.</p>
+        <form id="test-form-4">
+            <div class="form-group">
+                <label for="input4">Untracked Input</label>
+                <input type="text" id="input4" name="untracked" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div class="test-result" id="result-4"></div>
+    </div>
+
+    <!-- Test Controls -->
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button id="run-tests" class="btn btn-primary">Run All Tests</button>
+        <button id="reset-tests" class="btn btn-secondary">Reset Forms</button>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var testResults = {};
+
+            document.getElementById('run-tests').addEventListener('click', function() {
+                runAllTests();
+            });
+
+            document.getElementById('reset-tests').addEventListener('click', function() {
+                resetAllForms();
+            });
+
+            function runAllTests() {
+                test1_basicTracking();
+                test2_exemptInputs();
+                test3_multipleForms();
+                test4_noTracking();
+
+                displayResults();
+            }
+
+            function test1_basicTracking() {
+                var form = document.getElementById('test-form-1');
+                var input = document.getElementById('input1');
+
+                // Simulate change
+                input.value = 'Test Name';
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+
+                // Check if dirty indicator appears
+                var indicator = form.querySelector('.form-dirty-indicator');
+                var passed = indicator && indicator.style.display !== 'none';
+
+                testResults['test1'] = {
+                    name: 'Basic Dirty Tracking',
+                    passed: passed,
+                    message: passed ? 'Dirty indicator appears on change' : 'Dirty indicator not found'
+                };
+
+                // Clean up
+                FormLeaveGuard.markClean(form.id);
+            }
+
+            function test2_exemptInputs() {
+                var form = document.getElementById('test-form-2');
+                var searchInput = document.getElementById('search');
+                var dataInput = document.getElementById('actual-data');
+
+                // Try changing exempt input
+                searchInput.value = 'test search';
+                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+                var indicator1 = form.querySelector('.form-dirty-indicator');
+                var passed1 = !indicator1 || indicator1.style.display === 'none';
+
+                // Try changing tracked input
+                dataInput.value = 'test data';
+                dataInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+                var indicator2 = form.querySelector('.form-dirty-indicator');
+                var passed2 = indicator2 && indicator2.style.display !== 'none';
+
+                testResults['test2'] = {
+                    name: 'Exempt Inputs',
+                    passed: passed1 && passed2,
+                    message: passed1 && passed2
+                        ? 'Exempt inputs ignored, tracked inputs trigger indicator'
+                        : 'Exempt input handling failed'
+                };
+
+                // Clean up
+                FormLeaveGuard.markClean(form.id);
+            }
+
+            function test3_multipleForms() {
+                var form3a = document.getElementById('test-form-3a');
+                var form3b = document.getElementById('test-form-3b');
+                var input3a = document.getElementById('form3a-input');
+                var input3b = document.getElementById('form3b-input');
+
+                // Change form 3a only
+                input3a.value = 'Form 3A Data';
+                input3a.dispatchEvent(new Event('input', { bubbles: true }));
+
+                var indicator3a = form3a.querySelector('.form-dirty-indicator');
+                var indicator3b = form3b.querySelector('.form-dirty-indicator');
+
+                var passed = indicator3a && indicator3a.style.display !== 'none' &&
+                             (!indicator3b || indicator3b.style.display === 'none');
+
+                testResults['test3'] = {
+                    name: 'Multiple Forms',
+                    passed: passed,
+                    message: passed
+                        ? 'Forms track independently'
+                        : 'Forms not tracking independently'
+                };
+
+                // Clean up
+                FormLeaveGuard.markClean(form3a.id);
+                FormLeaveGuard.markClean(form3b.id);
+            }
+
+            function test4_noTracking() {
+                var form = document.getElementById('test-form-4');
+                var input = document.getElementById('input4');
+
+                // Try changing untracked form
+                input.value = 'Untracked Data';
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+
+                var indicator = form.querySelector('.form-dirty-indicator');
+                var passed = !indicator;
+
+                testResults['test4'] = {
+                    name: 'No Tracking Control',
+                    passed: passed,
+                    message: passed
+                        ? 'Form without data-track-dirty has no indicator'
+                        : 'Unexpected indicator on untracked form'
+                };
+            }
+
+            function displayResults() {
+                var totalTests = Object.keys(testResults).length;
+                var passedTests = Object.values(testResults).filter(function(r) { return r.passed; }).length;
+
+                Object.keys(testResults).forEach(function(testId) {
+                    var result = testResults[testId];
+                    var resultDiv = document.getElementById('result-' + testId.replace('test', ''));
+                    if (resultDiv) {
+                        resultDiv.className = 'test-result ' + (result.passed ? 'pass' : 'fail');
+                        resultDiv.textContent = (result.passed ? '✓ ' : '✗ ') + result.message;
+                    }
+                });
+
+                console.log('Test Results: ' + passedTests + '/' + totalTests + ' passed');
+            }
+
+            function resetAllForms() {
+                document.querySelectorAll('form').forEach(function(form) {
+                    form.reset();
+                    if (form.id && FormLeaveGuard) {
+                        FormLeaveGuard.markClean(form.id);
+                    }
+                });
+
+                // Clear result displays
+                document.querySelectorAll('.test-result').forEach(function(div) {
+                    div.textContent = '';
+                    div.className = 'test-result';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

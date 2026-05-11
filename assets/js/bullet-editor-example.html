@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGR Bullet Editor - Example Usage</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+        }
+        h2 {
+            color: #555;
+            margin-top: 2rem;
+        }
+        .example-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            margin: 1rem 0;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: center;
+            text-decoration: none;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+            transition: all 0.15s ease-in-out;
+        }
+        .btn-primary {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .btn-secondary {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>AGR Bullet Editor - Example Usage</h1>
+
+    <div class="info-box">
+        <strong>Note:</strong> This is a demonstration page for the AGR Bullet Editor module.
+        Ensure all required dependencies are loaded before the editor initializes.
+    </div>
+
+    <!-- Example 1: Auto-initialization -->
+    <div class="example-section">
+        <h2>Example 1: Auto-initialization</h2>
+        <p>Add <code>data-bullet-editor="auto"</code> to any textarea for automatic initialization:</p>
+
+        <div class="code-block">&lt;textarea name="strengths" data-bullet-editor="auto" rows="5"&gt;&lt;/textarea&gt;</div>
+
+        <div class="form-group">
+            <label for="strengths">Strengths (Auto-initialized)</label>
+            <textarea id="strengths" name="strengths" data-bullet-editor="auto" rows="5" placeholder="Enter strengths as bullet points..."></textarea>
+        </div>
+    </div>
+
+    <!-- Example 2: Manual initialization -->
+    <div class="example-section">
+        <h2>Example 2: Manual Initialization</h2>
+        <p>Initialize editors programmatically with custom options:</p>
+
+        <div class="code-block">const editorId = AGR.BulletEditor.init('#weaknesses', {
+    maxLength: 2000,
+    showCounter: true,
+    enablePreview: true,
+    autoSaveDelay: 5000
+});</div>
+
+        <div class="form-group">
+            <label for="weaknesses">Weaknesses (Manual initialization)</label>
+            <textarea id="weaknesses" name="weaknesses" rows="5" placeholder="Enter weaknesses as bullet points..."></textarea>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="init-weaknesses">Initialize Editor</button>
+    </div>
+
+    <!-- Example 3: Get/Set Content -->
+    <div class="example-section">
+        <h2>Example 3: Get/Set Content</h2>
+        <p>Programmatically get and set editor content:</p>
+
+        <div class="code-block">// Get content
+const bullets = AGR.BulletEditor.getContent(editorId);
+
+// Set content
+AGR.BulletEditor.setContent(editorId, [
+    'First point',
+    'Second point',
+    'Third point'
+]);</div>
+
+        <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" name="notes" rows="5" placeholder="Enter notes..."></textarea>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-secondary" id="init-notes">Initialize</button>
+            <button type="button" class="btn btn-secondary" id="get-content">Get Content</button>
+            <button type="button" class="btn btn-secondary" id="set-content">Set Content</button>
+            <button type="button" class="btn btn-secondary" id="destroy-notes">Destroy</button>
+        </div>
+
+        <div id="content-display" style="margin-top: 1rem; padding: 1rem; background: white; border: 1px solid #dee2e6; border-radius: 0.25rem; display: none;">
+            <strong>Content:</strong>
+            <pre id="content-value" style="margin: 0.5rem 0 0 0;"></pre>
+        </div>
+    </div>
+
+    <!-- Example 4: Form Integration -->
+    <div class="example-section">
+        <h2>Example 4: Form Integration</h2>
+        <p>Editors automatically sync before form submission:</p>
+
+        <form id="review-form">
+            <div class="form-group">
+                <label for="criteria1">Criteria 1: Scientific Merit</label>
+                <textarea id="criteria1" name="criteria1" data-bullet-editor="auto" rows="4" placeholder="Enter evaluation points..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="criteria2">Criteria 2: Innovation</label>
+                <textarea id="criteria2" name="criteria2" data-bullet-editor="auto" rows="4" placeholder="Enter evaluation points..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+
+    <!-- Dependencies -->
+    <script src="/assets/js/utilities.js"></script>
+    <script src="/assets/js/toast.js"></script>
+    <script src="/assets/js/bullet-editor.js"></script>
+
+    <!-- Example Scripts -->
+    <script>
+        // Example 2: Manual initialization
+        document.getElementById('init-weaknesses').addEventListener('click', function() {
+            const editorId = AGR.BulletEditor.init('#weaknesses', {
+                maxLength: 2000,
+                showCounter: true,
+                enablePreview: true,
+                autoSaveDelay: 5000
+            });
+
+            if (editorId) {
+                AGR.Toast.success('Editor initialized: ' + editorId);
+                this.textContent = 'Editor Initialized';
+                this.disabled = true;
+            }
+        });
+
+        // Example 3: Get/Set Content
+        let notesEditorId = null;
+
+        document.getElementById('init-notes').addEventListener('click', function() {
+            notesEditorId = AGR.BulletEditor.init('#notes', {
+                maxLength: 1500,
+                showCounter: true
+            });
+
+            if (notesEditorId) {
+                AGR.Toast.success('Notes editor initialized');
+                document.getElementById('get-content').disabled = false;
+                document.getElementById('set-content').disabled = false;
+                document.getElementById('destroy-notes').disabled = false;
+            }
+        });
+
+        document.getElementById('get-content').addEventListener('click', function() {
+            if (!notesEditorId) return;
+
+            const content = AGR.BulletEditor.getContent(notesEditorId);
+            const display = document.getElementById('content-display');
+            const value = document.getElementById('content-value');
+
+            value.textContent = JSON.stringify(content, null, 2);
+            display.style.display = 'block';
+
+            AGR.Toast.info('Content retrieved: ' + content.length + ' bullets');
+        });
+
+        document.getElementById('set-content').addEventListener('click', function() {
+            if (!notesEditorId) return;
+
+            const sampleContent = [
+                'First sample bullet point',
+                'Second sample bullet point',
+                'Third sample bullet point with more detail',
+                'Fourth bullet to demonstrate scrolling'
+            ];
+
+            AGR.BulletEditor.setContent(notesEditorId, sampleContent);
+            AGR.Toast.success('Sample content set');
+        });
+
+        document.getElementById('destroy-notes').addEventListener('click', function() {
+            if (!notesEditorId) return;
+
+            AGR.BulletEditor.destroy(notesEditorId);
+            notesEditorId = null;
+
+            document.getElementById('content-display').style.display = 'none';
+            AGR.Toast.info('Editor destroyed');
+
+            document.getElementById('get-content').disabled = true;
+            document.getElementById('set-content').disabled = true;
+            document.getElementById('destroy-notes').disabled = true;
+        });
+
+        // Initialize buttons state
+        document.getElementById('get-content').disabled = true;
+        document.getElementById('set-content').disabled = true;
+        document.getElementById('destroy-notes').disabled = true;
+
+        // Example 4: Form integration
+        document.getElementById('review-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Editors auto-sync via the module's form submit listener
+            AGR.Toast.success('Form submitted with bullet content');
+
+            // Log form data
+            const formData = new FormData(this);
+            for (const [key, value] of formData.entries()) {
+                console.log(`${key}:`, value);
+            }
+        });
+
+        // Demonstrate bulletChange event
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-initialized editors trigger this event
+            setTimeout(function() {
+                const strengthsTextarea = document.getElementById('strengths');
+                if (strengthsTextarea && strengthsTextarea._bulletEditorId) {
+                    strengthsTextarea.addEventListener('bulletChange', function(e) {
+                        console.log('Strengths changed:', e.detail);
+                    });
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

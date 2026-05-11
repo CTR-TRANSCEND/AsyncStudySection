@@ -1,0 +1,63 @@
+services:
+  php-apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grant-review-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - .:/var/www/html
+      - ./uploads:/var/www/html/uploads
+      - ./logs:/var/log/apache2
+    environment:
+      - APP_ENV=${APP_ENV:-production}
+      - APP_DEBUG=false
+      - DB_HOST=mariadb
+      - DB_NAME=${DB_NAME:-grant_review}
+      - DB_USER=${DB_USER:-grantuser}
+      - DB_PASS=${DB_PASS}
+      - DB_CHARSET=utf8mb4
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - grant-review-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  mariadb:
+    image: mariadb:11.4
+    container_name: grant-review-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME:-grant_review}
+      MARIADB_USER: ${DB_USER:-grantuser}
+      MARIADB_PASSWORD: ${DB_PASS}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/docker-init-migrations.sql:/docker-entrypoint-initdb.d/02-migrations.sql
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    networks:
+      - grant-review-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  mariadb-data:
+
+networks:
+  grant-review-network:
+    driver: bridge

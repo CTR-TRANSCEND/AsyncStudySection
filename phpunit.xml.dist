@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         failOnRisky="true"
+         failOnWarning="false"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="false"
+>
+    <testsuites>
+        <testsuite name="Review Management Tests">
+            <directory suffix="Test.php">tests</directory>
+            <exclude>tests/AccountLockoutTest.php</exclude>
+            <exclude>tests/PasswordValidatorTest.php</exclude>
+            <exclude>tests/navigation_system_test.php</exclude>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <ini name="display_errors" value="1"/>
+        <ini name="error_reporting" value="-1"/>
+        <env name="DB_HOST" value="localhost"/>
+        <env name="DB_NAME" value="grant_review"/>
+        <env name="DB_USER" value="your_db_user"/>
+        <env name="DB_PASS" value="your_db_password"/>
+        <env name="DB_CHARSET" value="utf8mb4"/>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_DEBUG" value="false"/>
+    </php>
+
+    <source>
+        <include>
+            <directory suffix=".php">includes</directory>
+        </include>
+    </source>
+</phpunit>

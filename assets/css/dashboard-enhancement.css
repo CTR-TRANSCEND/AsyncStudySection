@@ -1,0 +1,417 @@
+/**
+ * Dashboard Enhancement Styles (SPEC-UIX-002 Milestone 6)
+ * TAG: SPEC-UIX-002-M6-CSS
+ *
+ * Design-TAG: Enhanced dashboard with progress bars, filters, and statistics
+ * Function-TAG: Improves dashboard usability and information density
+ * Test-TAG: WCAG 2.1 AA compliant, tested via Playwright
+ */
+
+/* ============================================
+   STATISTICS CARDS
+   ============================================ */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stats-card {
+  background: var(--bg-primary, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.stats-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.stats-card-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.stats-card-icon.icon-primary {
+  background: var(--primary-light, #dbeafe);
+  color: var(--primary-color, #3b82f6);
+}
+
+.stats-card-icon.icon-success {
+  background: var(--success-light, #d1fae5);
+  color: var(--success-color, #10b981);
+}
+
+.stats-card-icon.icon-warning {
+  background: var(--warning-light, #fef3c7);
+  color: var(--warning-color, #f59e0b);
+}
+
+.stats-card-icon.icon-danger {
+  background: var(--danger-light, #fee2e2);
+  color: var(--danger-color, #ef4444);
+}
+
+.stats-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stats-card-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #111827);
+  line-height: 1.2;
+}
+
+.stats-card-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #6b7280);
+  margin-top: 0.25rem;
+}
+
+/* ============================================
+   QUICK FILTERS
+   ============================================ */
+
+.dashboard-filters {
+  background: var(--bg-primary, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #111827);
+}
+
+.filter-select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.375rem;
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #111827);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter-select:hover {
+  border-color: var(--primary-color, #3b82f6);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.reset-filters {
+  padding: 0.5rem 1rem;
+  background: var(--secondary-color, #6b7280);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.reset-filters:hover {
+  background: var(--secondary-dark, #4b5563);
+}
+
+.reset-filters:active {
+  transform: scale(0.98);
+}
+
+/* ============================================
+   APPLICATION PROGRESS BARS
+   ============================================ */
+
+.application-progress-bar {
+  height: 0.5rem;
+  background: var(--bg-secondary, #f3f4f6);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.application-progress-fill {
+  height: 100%;
+  background: var(--primary-color, #3b82f6);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.application-progress-fill[data-progress="low"] {
+  background: var(--danger-color, #ef4444);
+}
+
+.application-progress-fill[data-progress="medium"] {
+  background: var(--warning-color, #f59e0b);
+}
+
+.application-progress-fill[data-progress="high"] {
+  background: var(--success-color, #10b981);
+}
+
+/* ============================================
+   DEADLINE CHIPS
+   ============================================ */
+
+.deadline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.deadline-chip.status-on-track {
+  background: var(--success-light, #d1fae5);
+  color: var(--success-dark, #065f46);
+}
+
+.deadline-chip.status-due-soon {
+  background: var(--warning-light, #fef3c7);
+  color: var(--warning-dark, #92400e);
+}
+
+.deadline-chip.status-overdue {
+  background: var(--danger-light, #fee2e2);
+  color: var(--danger-dark, #991b1b);
+}
+
+.deadline-chip-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* ============================================
+   APPLICATION CARDS
+   ============================================ */
+
+.application-card {
+  background: var(--bg-primary, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.application-card.hidden {
+  display: none;
+}
+
+.application-card.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.application-card.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.application-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.application-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  margin: 0;
+}
+
+.application-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.application-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.application-card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--bg-primary, #ffffff);
+  border: 2px dashed var(--border-color, #e5e7eb);
+  border-radius: 0.5rem;
+}
+
+.empty-state-icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1rem;
+  color: var(--text-tertiary, #9ca3af);
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #6b7280);
+  margin: 0 0 1.5rem 0;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
+  .reset-filters {
+    width: 100%;
+  }
+
+  .application-card-header {
+    flex-direction: column;
+  }
+
+  .application-card-footer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .application-card-actions {
+    flex-direction: column;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* Focus indicators */
+.filter-select:focus,
+.reset-filters:focus {
+  outline: 2px solid var(--primary-color, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .stats-card:hover,
+  .application-card {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .stats-card,
+  .application-card {
+    border-width: 2px;
+  }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .stats-card {
+  background: var(--bg-primary, #1a202c);
+  border-color: var(--border-color, #4a5568);
+}
+
+[data-theme="dark"] .dashboard-filters {
+  background: var(--bg-primary, #1a202c);
+  border-color: var(--border-color, #4a5568);
+}
+
+[data-theme="dark"] .application-card {
+  background: var(--bg-primary, #1a202c);
+  border-color: var(--border-color, #4a5568);
+}
+
+[data-theme="dark"] .filter-select {
+  background: var(--bg-secondary, #2d3748);
+  border-color: var(--border-color, #4a5568);
+}
+
+/* Live region for screen readers */
+.filter-announcements {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,0 +1,288 @@
+# ============================================
+# MoAI-ADK Package Distribution .gitignore
+# ============================================
+# Version: 0.33.0
+# Updated: 2026-01-10
+# Purpose: Essential patterns for user projects
+# ============================================
+
+# ===========================================
+# Go Build Artifacts
+# ===========================================
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+cover.out
+cover.html
+cpu.prof
+mem.prof
+
+# ===========================================
+# Build Artifacts & Distribution
+# ===========================================
+build/
+dist/
+*.egg-info/
+*.egg
+
+# ===========================================
+# Python Cache & Bytecode
+# ===========================================
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+.mypy_cache/
+.ruff_cache/
+*.db
+*.sqlite
+*.sqlite3
+*.rdb
+*.dbm
+
+# ===========================================
+# Virtual Environments
+# ===========================================
+venv/
+.venv/
+env/
+.env/
+.uv_cache/
+.uv-cache/
+
+# ===========================================
+# Test Coverage
+# ===========================================
+.coverage
+coverage.json
+htmlcov/
+
+# ===========================================
+# IDE & Editors
+# ===========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sw?
+*~
+.cursor/
+*.sublime-project
+*.sublime-workspace
+*.njsproj
+*.sln
+*.suo
+.#*
+
+# ===========================================
+# OS Files
+# ===========================================
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Windows
+[Dd]esktop.ini
+Thumbs.db
+ehthumbs.db
+
+# Linux
+.directory
+
+# ===========================================
+# Logs & Temporary Files
+# ===========================================
+*.log
+logs/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ===========================================
+# Backups
+# ===========================================
+.moai-backups/
+*.backup/
+*-backup/
+*_backup_*/
+
+# ===========================================
+# Secrets and Credentials (CRITICAL)
+# ===========================================
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Certificate files
+*.pem
+*.p12
+*.pfx
+*.jks
+
+# Private keys (specific patterns to avoid false positives)
+# FIXED: Issue #237 - Replaced overly broad *key* and *secret* patterns
+*-key.*
+*_key.*
+*.key.*
+*-secret-key.*
+*-api-key.*
+api-key-*
+secret-key-*
+private-key*
+*-secret.*
+*_secret.*
+*.secret.*
+secret-*.*
+
+# Credential patterns in environment files
+*_secret=*
+*_token=*
+
+# Cloud provider credentials
+.aws/config
+.aws/credentials
+
+# ===========================================
+# Claude Code Configuration
+# ===========================================
+.claude/settings.local.json
+.claude/settings.local.*.json
+.claude/.env.local*
+.claude/local/
+.claude/plans/
+.claude/agent-memory/
+.claude/worktrees/
+
+# Skill-specific credentials
+.claude/skills/*/.env*
+.claude/skills/*/secrets/
+.claude/skills/*/*/*secret*
+.claude/skills/*/*/*key*
+.claude/skills/*/*/*token*
+# Re-include legitimate skill module files containing "token" in their name
+!.claude/skills/*/modules/*token*.md
+
+# ===========================================
+# Local-Only Files (never sync via git pull)
+# ===========================================
+.moai/status_line.sh
+.moai/memory/
+.moai/worktrees/
+
+# ===========================================
+# Evolution Telemetry (local-only usage data)
+# Learnings and new-skills are git-tracked for team sharing.
+# ===========================================
+.moai/evolution/telemetry/*.jsonl
+!.moai/evolution/telemetry/.gitkeep
+
+# ===========================================
+# Node.js (for docs/Nextra)
+# ===========================================
+node_modules/
+*.tsbuildinfo
+.tscache/
+.next/
+out/
+
+# ===========================================
+# Build Tools & Frameworks
+# ===========================================
+.turbo/
+.nuxt/
+dist-ssr/
+
+# ===========================================
+# Deployment & CI/CD
+# ===========================================
+.vercel/
+.netlify/
+.firebase/
+
+# User Custom Patterns (preserved by moai update)
+.claude/
+CLAUDE.md
+.moai/
+.mcp.json
+.credentials.local
+config/*.apache_backup
+config/*.bak
+CLAUDE_status.txt
+phpunit.xml
+!phpunit.xml.dist
+vendor/
+composer.phar
+composer-setup.php
+uploads/
+exports/
+backups/
+.phpunit.cache/
+playwright-tests/
+playwright.config.ts
+test-results/
+test-screenshots/
+playwright-report/
+.playwright-mcp/
+sampleReports/
+analyze_budget_section.py
+analyze_reports.py
+check_headers.py
+create_summary.py
+detailed_parser.py
+extract_sample_data.py
+grant_review_parser.py
+composer-setup.php
+setup_apache_symlink.sh
+sync_to_apache.sh
+.htaccess.backup
+.htaccess.disabled
+test.txt
+
+# Project state docs and ignet deploy scripts:
+#   - Tracked on origin (windysky/async-grant-review, PRIVATE).
+#   - Stripped from ctr-transcend (CTR-TRANSCEND/async-grant-review, PUBLIC)
+#     by deploy/ignet/release-to-public.sh at release time.
+# Do NOT re-add these to .gitignore — public-mirror filtering happens
+# in the release script, not here.
+SYSTEM_SUMMARY.md
+APACHE_SETUP.md
+SYSTEM_ADMIN_SETUP.md
+CHANGELOG_SUMMARY.md
+FILES_CREATED.md
+FILES_CREATED_SPEC_REV_001.md
+IMPLEMENTATION_REPORT_SPEC-DEV-001.md
+IMPLEMENTATION_SUMMARY_SPEC-UIX-002.md
+LATEST_IMPROVEMENTS.md
+PERMISSIONS_FIXED.md
+PLAYWRIGHT_TESTING_GUIDE.md
+QUICK_REFERENCE.md
+README_SYSTEM.md
+REPORT_STRUCTURE_ANALYSIS.md
+REVIEWER_IMPROVEMENTS.md
+SECURITY_IMPLEMENTATION_REPORT.md
+SPEC-SEC-002_IMPLEMENTATION_REPORT.md
+TDD_IMPLEMENTATION_PROGRESS_M2-8.md
+TDD_IMPLEMENTATION_REPORT_SPEC-REV-001.md
+TDD_IMPLEMENTATION_REPORT_SPEC-UIX-002.md
+TDD_IMPLEMENTATION_REPORT_SPEC-UIX-002_MILESTONES5-8.md
+TESTING_GUIDE.md
+TROUBLESHOOTING_500_ERROR.md
+UI_IMPROVEMENTS.md
+UI_UX_ENHANCEMENT_REPORT.md
+UPDATE_SUMMARY.md
+assets/js/BULLET_EDITOR_GUIDE.md
+assets/js/BULLET_EDITOR_IMPLEMENTATION.md
+assets/js/bullet-editor-quick-reference.md

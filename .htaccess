@@ -1,0 +1,36 @@
+# Grant Review System .htaccess
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Deny access to sensitive files
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(py|yml|yaml|json|md|sql|sh|log|bak)$">
+    Require all denied
+</FilesMatch>
+
+# Allow specific JSON/JS files needed by the app
+<FilesMatch "^(package|composer)\.json$">
+    Require all denied
+</FilesMatch>
+
+# Deny access to .git and other sensitive directories via RewriteRule
+# (DirectoryMatch is not allowed in .htaccess context)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (^|/)\.git(/|$) - [F,L]
+    RewriteRule (^|/)(\.moai|\.claude|database|tests|backups|docker|deploy|node_modules|vendor)(/|$) - [F,L]
+</IfModule>
+
+# Deny access to .htaccess itself
+<Files ".htaccess">
+    Require all denied
+</Files>
